@@ -57,6 +57,7 @@ Again, why cart all of these files around on your computer and keep track of the
 
 You may also regard **your blog posts themselves** as severable from any website repo you are working out of.
 If you have ever torn your website down and started over, but had to cart your actual blog posts from one project folder to the next, you have already felt the pain that might have been avoided by saving your posts in their own, separate repository.
+(Edit: [I have implemented this too, now](/blog/post_submodule)).
 
 
 ### How does a submodule manage its content separately? {#how}
@@ -74,6 +75,7 @@ There are a few important details to note about how this workflow comes together
     If you have write access to the submodule repository (for example, because its source code is in another project on your computer), you can make changes to the submodule contents from within the submodule and push to remote.
     It's similar a multi-user Git workflow, except you're one user editing the repo from multiple endpoints.
     This lets you keep the submodule content updates on all of its local and remote copies with minimal effort.
+    Just be sure you have checked out a branch (not in detached `HEAD` state) before you make changes to the submodule files. (More [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_working_on_a_submodule)).
 
 
 ## How to use submodules {#how-to}
@@ -114,10 +116,11 @@ cd ..
 ln -f ./submodules/dots_blogdown/.Rprofile ./.Rprofile
 ```
 
-You may use hard links or soft (symbolic) links---  have been hard linking on macOS because I can't get the symlink to work the way I want it to, but that's probably my own mistake.
-For my workflow for my job (which uses Linux machines & Python modules), symbolic linking is easier and sufficient.
+Depending on what you are doing, you may find hard links or soft (symbolic) links more appropriate---I have been hard linking on macOS because I can't get the symlink to work the way I want it to, but that's probably my own mistake.
+My workflow for my job (which uses Linux machines & Python modules) finds that symbolic linking is sufficient.
 
 From here, if I ever change my .Rprofile repo, updating it on my website is as simply as pulling the repo (and updating your links, depending on the way you set any links).
+If you want to update your .Rprofile repo _from within your website repo_, this is also possible, but be sure you aren't modifying the submodule in a detached `HEAD` state, which can happen when you first initialize the submodule contents (see [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_working_on_a_submodule) for more).
 
 
 ## Getting it working on Netlify {#netlify-setup}

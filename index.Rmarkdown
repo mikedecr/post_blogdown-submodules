@@ -77,6 +77,7 @@ There are a few important details to note about how this workflow comes together
     This lets you keep the submodule content updates on all of its local and remote copies with minimal effort.
     Just be sure you have checked out a branch (not in detached `HEAD` state) before you make changes to the submodule files. (More [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_working_on_a_submodule)).
 
+[^netlify-clone]: This is also crucial for Netlify to build your site, in fact, because Netlify clones your repository in and rebuilds your website from the clone.
 
 ## How to use submodules {#how-to}
 
@@ -128,7 +129,7 @@ If you want to update your .Rprofile repo _from within your website repo_, this 
 Once you are done getting your site looking the way you want, commit the `.gitmodules` file and any other byproducts (such as the .Rprofile file copy).
 
 At this point, however, my site failed to build on Netlify. 
-Netlify works by essentially cloning your website repository to their servers and building Hugo on their end.
+Netlify works by cloning your website repository to their servers and building it with Hugo on their end.
 This process fails if Netlify can't successfully reproduce your website repo.
 Submodules can cause this failure for two reasons.
 First, if you added a submodule using `ssh` instead of `https`, you need to give Netlify extra permission.

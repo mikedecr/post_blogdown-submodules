@@ -137,7 +137,7 @@ cd ..
 ln -f ./submodules/dots_blogdown/.Rprofile ./.Rprofile
 ```
 
-It is smart to automate any post-Git processes, such as linking files to other destinations, by specifying those operations in your website's `/R/build.R` and `/R/build2.R` files.
+It is smart to automate any post-Git processes, such as linking files to other destinations, by specifying any pre-build operations in your website's `/R/build.R` file.
 This ensures that your website builds in a robust and replicable way if your submodule content should ever change.
 With that automation in place, if I ever change my .Rprofile repo, synchronizing that file in my website repo is as simple as pulling the submodule changes and rebuilding the website.
 

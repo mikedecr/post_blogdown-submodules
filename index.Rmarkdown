@@ -10,28 +10,29 @@ tags:
 - rstats
 - git
 - netlify
+- modularity
 title: |
-  Managing {Blogdown} content and dependencies with Git submodules
-subtitle: Modular opportunities with workable solutions
-excerpt: Modular opportunities with workable solutions
+  Modular Blogdown content with Git submodules
+subtitle: |
+    Maybe your website isn't one self-contained entity
+excerpt: |
+    A blogdown website is more like a combination of modular components that are better managed independently, each component with its own repository.
+    These modular components _come together_ at the nexus of the website, but the components do not _belong to_ the website.
 ---
 
 Most introductions to [`blogdown`](https://pkgs.rstudio.com/blogdown/) guide the reader to create a website managed by a single Git repository.
-This repository manages everything in the website: site & theme configs, page content, theme customization, blog posts, build routines and more.
-These guides are extremely helpful for users who are new either to blogdown or to Git.
-
-But the single-repository workflow may present certain drawbacks for users who have more experience with these tools.
-If you value **modularity** as a guiding principle in your software design (as I do), you may reject the idea that a website is just one project worthy of one repository.
-You may instead view the website as a combination of modular components that are better managed independently with separate repositories.
+This repository manages everything in the website: the config files, page content, theme customization, blog posts, build routines... all of it.
+These guides are great for users who are new to blogdown and/or Git.
+But for users who have more experience with either, especially if they value **modularity** as an important software principle (as I do), the single-repo model doesn't work as well.
+From that point of view, a blogdown website feels more like a combination of modular components that are better managed independently, each component with its own repository.
 These modular components _come together_ at the nexus of the website, but the components do not _belong to_ the website.
 
-This post advances a modular view of blog sites and discusses how to use [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) to manage the many separate components of the site.
-I focus the discussion on [Blogdown](https://bookdown.org/yihui/blogdown/) websites (built by Hugo but driven by R/Rmarkdown), but the theoretical lessons are more broadly applicable.
-
-Road-map for the post:
+This post advocates for the modular view of blog sites discusses how to manage the site's various modules with [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+I focus the discussion on [Blogdown](https://bookdown.org/yihui/blogdown/) websites, but the theoretical lessons are more broadly applicable.
+I will cover...
 
 1. [What are submodules?](#what)
-1. [Why would you use submodules for your website code?](#why)
+1. [Why does a modular view of your website code make sense?](#why)
 1. [How does a submodule manage its content?](#how)
 1. [How do you add submodules to your website workflow?](#how-to)
 1. [How do you get it working on Netlify?](#netlify-setup)
@@ -56,27 +57,29 @@ A quick note on each:
 
 - **Blog posts**: The content of a blog post is completely separable from the website repo. 
     We can take a blog post and locate it in a different website, and it would still be meaningful.
-    Many blogdown users remake their website and carry their old blog posts to the new site, which encapsulates the posts' relationship to the site as a whole.
-    I discuss this modular approach to blog posts in more detail [here](/blog/post_submodule).
+    Many blogdown users remake their website and carry their old blog posts to the new site, which shows that blog content doesn't really depend on the website.
+    I discuss modular blog management in more detail [here](/blog/post_submodule).
 
 [^theme]: This isn't a perfect system; some themes define special fields whose values are specified in your content files, but the main idea is there.
 
 - **Hugo theme**: Hugo is designed such that the `/content/` of a website (specified in markdown files) is more-or-less independent of its `/theme/`.[^theme]
     The same theme can be used for multiple websites, and a single website can swap out one theme for another.
     Because themes are managed with Git repositories already, you can pull theme updates without losing any extraneous customizations specified in your `/layouts/` folder.
-    When you create a new website with blogdown, the package actually interrupts this workflow by deleting your chosen theme's `.git` directory, but if you install your theme as a submodule, you can use the theme _and_ maintain its connection to its remote repository.
+    This is baked into the very nature of Hugo, but it's a quirk of Blogdown that when you create a new website with blogdown, Blogdown actually deletes your theme's `.git` directory. 
+    This is probably for ease-of-use among people who don't want to manage the theme as a submodule, but we do! 
+    We want to use the theme _and_ maintain its connection to its remote repository.
 
 - **The website `.Rprofile` file**: You may have a global .Rprofile file, but the purpose of the website-specific .Rprofile is to control [blogdown build behavior](https://bookdown.org/yihui/blogdown/global-options.html).
-    Your blogdown build preferences probably are nto specific to this website repository.
+    Your blogdown build preferences probably are not specific to this website repository.
     Instead, it is likely that those preferences reflect your workflow for blogging _in general_ and could be equally applicable to any other website repo you create or manage.
-    If you change your blogdown workflow in a way that bears on this .Rprofile file, that change will likely affect all of your blogdown websites equally, so managing those .Rprofiles separately for each website is inefficient and error-prone. 
+    If you change your blogdown workflow in a way that bears on this .Rprofile file, that change will likely affect all of your blogdown websites equally, so managing those .Rprofiles separately for each website is inefficient and error-prone.
 
 
 
 ### How does a submodule manage its content separately? {#how}
 
 If you have never heard of submodules before, the following details are helpful for understanding how they can fit into a blogdown workflow.
-Disclaimer: this is not an exhaustive rundown of how to use submodule.
+Disclaimer: this is not an exhaustive introduction to submodules.
 
 **When you add a submodule to a repository, the repository tracks the _presence_ of the submodule, but it does not track the content.** 
 Your website repo tracks the presence of submodules to ensure that your repo can be cloned with all necessary dependencies in place.[^netlify-clone] 
@@ -87,13 +90,13 @@ There is no need to duplicate that effort.
 
 **Changes to the submodule repo can be pulled into your website repo.**
 This is standard workflow for Git. 
-If you want to pin your dependency to a particular commit of the submodule, simply check out that submodule.
+If you want to pin your dependency to a particular commit of the submodule, simply `git checkout` that commit.
 If you want your dependency to stay dynamically up to date with the submodule's remote repo, checkout the desired remote branch and pull changes as they arise.
 
 **Changes to the submodule content can be pushed to remote.**
-If you have write access to the submodule repository (for example, because its source code is in another project on your computer), you can make changes to the submodule contents from within the submodule and push to remote.[^detached-head]
-This is similar to a multi-user Git workflow, except you are one user editing the repo from potentially several endpoints.
-This lets you keep the submodule content updated on all of its local copies and remotes with minimal effort.
+If you have write access to the submodule remote (for example, because its source code is in another project on your computer), you can make changes to the submodule contents from within the submodule and push to remote.[^detached-head]
+This is similar to a multi-user Git workflow, except it's just you, editing the repo from different endpoints.
+This lets you keep the submodule content updated on all of its local and remote copies without duplicating any effort.
 
 [^detached-head]: Just be sure you have checked out a branch (not in detached `HEAD` state) before you make changes to the submodule files. (More [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules#_working_on_a_submodule)).
 
@@ -105,7 +108,7 @@ In the spirit of modularity, there is actually nothing Blogdown-specific about i
 All the same, I will discuss the .Rprofile example mentioned above.
 I keep my Blogdown .Rprofile in its own repository [here](git@github.com:mikedecr/dots_blogdown.git).
 
-Add the submodule to your website repo (assuming the website repo is already initialized) with `git submodule add [url] [destinateion]`. 
+Add the submodule to your website repo (assuming the website repo is already initialized) with `git submodule add [url] [destination]`. 
 You may want to be strategic about where you add the repo, since it will effectively behave like a cloned repository.
 I prefer (lately) to give projects a `/submodules/` folder, and clone submodules there.
 
@@ -139,7 +142,7 @@ ln -f ./submodules/dots_blogdown/.Rprofile ./.Rprofile
 
 It is smart to automate any post-Git processes, such as linking files to other destinations, by specifying any pre-build operations in your website's `/R/build.R` file.
 This ensures that your website builds in a robust and replicable way if your submodule content should ever change.
-With that automation in place, if I ever change my .Rprofile repo, synchronizing that file in my website repo is as simple as pulling the submodule changes and rebuilding the website.
+With that automation in place, if I ever change my .Rprofile repo, synchronizing that file in my website repo is as simple as pulling the submodule changes and rebuilding the website---the linking from submodule to project root happens automatically.
 
 
 ## Getting it working on Netlify {#netlify-setup}

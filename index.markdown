@@ -334,7 +334,7 @@ Here's a quick rundown of what I do:
 1. **Add the new repo as a submodule to a new folder for that post inside of `/content/blog`.**
    I assume you use a "page bundle" model for organizing your blog code: separate folders for each post that contain respective `index.[R]markdown` files.
    It's advisable to blog with page bundles even if you don't want to implement hyper-modular blog versioning.
-   Learn more about page bundles from Alison Hill [here](https://www.apreshill.com/blog/2020-12-new-year-new-blogdown/#step-4-create-content).
+   Learn more about page bundles from Alison Hill [here](https://www.apreshill.com/blog/2019-02-spoonful-bundles/).
 1. **Your `.gitmodules` file will automatically update to reflect the new submodule.**
    You will eventually want to commit that change, but it doesn't have to be now.
    If necessary, initialize/update the submodule to clone its contents into the new post directory.

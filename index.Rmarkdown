@@ -21,6 +21,14 @@ draft: false
 ---
 
 
+```{r renv, echo = FALSE, include = FALSE}
+here::here()
+getwd()
+# testing
+renv::activate()
+renv::restore()
+```
+
 When I finished graduate school, I tore down my website. 
 
 For a handful of reasons.
@@ -87,7 +95,7 @@ I want to flag these concepts so that we understand each other better.
 A directory is a folder on your computer that holds files.
 A (Git) repository tracks changes to files.
 For many projects, the project's root directory is entirely managed by one repository, so the distinction between the two may be blurred.
-When Git submodules are involved, this is no longer be true.
+When Git submodules are involved, this is no longer true.
 Your website directory will be managed by one repository, and sub-directories below your website will be managed by other repositories.
 
 **Website vs. module.**
@@ -189,10 +197,10 @@ This allows you to keep the submodule content updated on all of its local and re
 ### How to add your website components as submodules
 
 In the spirit of modularity, there is actually nothing Blogdown-specific about including submodules within a project repository.
-All the same, I will discuss a Blogdown-specific example: the `.Rprofile` module, which I keep in [its own repository here](git@github.com:mikedecr/dots_blogdown.git).
+All the same, I will discuss a Blogdown-specific example: the `.Rprofile` module, which I keep in [its own repository here](https://github.com/mikedecr/dots_blogdown).
 I discuss how I manage _blog posts_ with submodules [later on](#blog), because that conversation is a little more involved.
 
-You can add a submodule to your (already initiatlized) website repo with `git submodule add [my-url] [my-destination-folder]`. 
+You can add a submodule to your (already initialized) website repo with `git submodule add [my-url] [my-destination-folder]`. 
 You will want to be strategic about where you add the repo, since it will effectively behave like a cloned repository.
 I often create a `/submodules/` folder under my project root and clone submodules to that location.
 
@@ -372,3 +380,6 @@ If you find it helpful, awesome!
 But as always, you should do what works for you.
 It happened to be the case that I had a particular set of problems and a desire to strengthen some skills could help me solve them.
 
+```{r session-info}
+sessioninfo::session_info()
+```

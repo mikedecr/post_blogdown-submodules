@@ -21,6 +21,8 @@ draft: false
 ---
 
 
+
+
 When I finished graduate school, I tore down my website. 
 
 For a handful of reasons.
@@ -87,7 +89,7 @@ I want to flag these concepts so that we understand each other better.
 A directory is a folder on your computer that holds files.
 A (Git) repository tracks changes to files.
 For many projects, the project's root directory is entirely managed by one repository, so the distinction between the two may be blurred.
-When Git submodules are involved, this is no longer be true.
+When Git submodules are involved, this is no longer true.
 Your website directory will be managed by one repository, and sub-directories below your website will be managed by other repositories.
 
 **Website vs. module.**
@@ -189,10 +191,10 @@ This allows you to keep the submodule content updated on all of its local and re
 ### How to add your website components as submodules
 
 In the spirit of modularity, there is actually nothing Blogdown-specific about including submodules within a project repository.
-All the same, I will discuss a Blogdown-specific example: the `.Rprofile` module, which I keep in [its own repository here](git@github.com:mikedecr/dots_blogdown.git).
+All the same, I will discuss a Blogdown-specific example: the `.Rprofile` module, which I keep in [its own repository here](https://github.com/mikedecr/dots_blogdown).
 I discuss how I manage _blog posts_ with submodules [later on](#blog), because that conversation is a little more involved.
 
-You can add a submodule to your (already initiatlized) website repo with `git submodule add [my-url] [my-destination-folder]`. 
+You can add a submodule to your (already initialized) website repo with `git submodule add [my-url] [my-destination-folder]`. 
 You will want to be strategic about where you add the repo, since it will effectively behave like a cloned repository.
 I often create a `/submodules/` folder under my project root and clone submodules to that location.
 
@@ -372,3 +374,53 @@ If you find it helpful, awesome!
 But as always, you should do what works for you.
 It happened to be the case that I had a particular set of problems and a desire to strengthen some skills could help me solve them.
 
+
+```r
+sessioninfo::session_info()
+```
+
+```
+## ─ Session info ───────────────────────────────────────────────────────────────
+##  setting  value                       
+##  version  R version 4.1.2 (2021-11-01)
+##  os       macOS Big Sur 10.16         
+##  system   x86_64, darwin17.0          
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  ctype    en_US.UTF-8                 
+##  tz       America/Chicago             
+##  date     2021-11-15                  
+## 
+## ─ Packages ───────────────────────────────────────────────────────────────────
+##  ! package     * version date       lib source        
+##  P blogdown      1.5     2021-09-02 [?] CRAN (R 4.1.0)
+##  P bookdown      0.22    2021-04-22 [?] CRAN (R 4.1.0)
+##  P bslib         0.2.5.1 2021-05-18 [?] CRAN (R 4.1.0)
+##  P cli           3.1.0   2021-10-27 [?] CRAN (R 4.1.0)
+##  P digest        0.6.28  2021-09-23 [?] CRAN (R 4.1.0)
+##  P evaluate      0.14    2019-05-28 [?] CRAN (R 4.1.0)
+##  P here          1.0.1   2020-12-13 [?] CRAN (R 4.1.0)
+##  P htmltools     0.5.1.1 2021-01-22 [?] CRAN (R 4.1.0)
+##  P jquerylib     0.1.4   2021-04-26 [?] CRAN (R 4.1.0)
+##  P jsonlite      1.7.2   2020-12-09 [?] CRAN (R 4.1.0)
+##  P knitr         1.33    2021-04-24 [?] CRAN (R 4.1.0)
+##  P magrittr      2.0.1   2020-11-17 [?] CRAN (R 4.1.0)
+##  P R6            2.5.1   2021-08-19 [?] CRAN (R 4.1.0)
+##    renv          0.14.0  2021-07-21 [1] CRAN (R 4.1.0)
+##  P rlang         0.4.12  2021-10-18 [?] CRAN (R 4.1.0)
+##  P rmarkdown     2.11    2021-09-14 [?] CRAN (R 4.1.0)
+##  P rprojroot     2.0.2   2020-11-15 [?] CRAN (R 4.1.0)
+##  P sass          0.4.0   2021-05-12 [?] CRAN (R 4.1.0)
+##  P sessioninfo   1.1.1   2018-11-05 [?] CRAN (R 4.1.0)
+##  P stringi       1.7.5   2021-10-04 [?] CRAN (R 4.1.0)
+##  P stringr       1.4.0   2019-02-10 [?] CRAN (R 4.1.0)
+##  P withr         2.4.2   2021-04-18 [?] CRAN (R 4.1.0)
+##  P xfun          0.23    2021-05-15 [?] CRAN (R 4.1.0)
+##  P yaml          2.2.1   2020-02-01 [?] CRAN (R 4.1.0)
+## 
+## [1] /Users/michaeldecrescenzo/projects/mikedecr-site/renv/library/R-4.1/x86_64-apple-darwin17.0
+## [2] /private/var/folders/_d/61_3m1g52t5b53sz8q01w6gc0000gn/T/Rtmp4ld9QH/renv-system-library
+## 
+##  P ── Loaded and on-disk path mismatch.
+```

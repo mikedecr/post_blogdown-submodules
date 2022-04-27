@@ -1,7 +1,7 @@
 ---
 author: Michael DeCrescenzo
 layout: single
-categories: 
+categories:
 tags:
 - computing
 - blogdown
@@ -23,7 +23,7 @@ draft: false
 
 
 
-When I finished graduate school, I tore down my website. 
+When I finished graduate school, I tore down my website.
 
 For a handful of reasons.
 I no longer needed a website that cried out, "Help me, I'm finishing my PhD and I need to escape."
@@ -36,7 +36,7 @@ It's that, when you're a finicky person like me, setting up a website with the r
 I was encountering the same familiar challenges over and over.
 
 **For example, the site's Hugo theme.**
-I would take a lot of Hugo themes for test-drives. 
+I would take a lot of Hugo themes for test-drives.
 Hugo advertizes themes as if they were completely modular with respect to your `/content/` folder.
 For most themes, this is a lie.
 Themes usually want too many bespoke variables or file structures in your website `content`.
@@ -60,12 +60,12 @@ This post will continue that pattern: intense at first, but well-founded, soluti
 What we want is a principled and robust approach for managing the many interlocking components of your website.
 Specifically, we explore the **_modularity_ of the elements in your website.**
 I take the view that your website is a collection of modular components that are better managed independently, **with different Git repositories for the different site components.**
-Yes, managing your website with multiple repositories. 
+Yes, managing your website with multiple repositories.
 Stay with me.
 
 The modules that compose your website include your theme, your blog posts, your Blogdown build preferences (implemented in your `.Rprofile`), and maybe more.
 These modular components _come together_ at the nexus of the website, but as I will argue, these components should not _belong to_ the website.
-Why not? 
+Why not?
 Because these components can be re-used across different websites or substituted with other similar components.
 Hugo already flirts with this idea in its core design by separating the `/theme/` directory from the `/content/` directory, as if to say, "these components can be combined but do not depend on one another."
 This post takes an opinionated stance that **such modularity is a good idea** and should be assertively extended to other components of your Blogdown site.
@@ -85,7 +85,7 @@ In case you host your blog on Netlify, I will also discuss how to ensure that Ne
 This discussion will involve plenty of concepts that sound similar to one another but should be understood as distinct things.
 I want to flag these concepts so that we understand each other better.
 
-**Directory vs. repository.** 
+**Directory vs. repository.**
 A directory is a folder on your computer that holds files.
 A (Git) repository tracks changes to files.
 For many projects, the project's root directory is entirely managed by one repository, so the distinction between the two may be blurred.
@@ -125,7 +125,7 @@ Here is how I justify this view for each component:
     It turns out that, for blog posts, modularity and reproducibility are pretty closely related.
     In her discussion of blog reproducibility, Danielle Navarro touched on the principle that a blog should be ["encapsulated" or "isolated"](https://blog.djnavarro.net/posts/2021-09-30_on-blogging-reproducibly/) away from the broader website to robustify the blog against other dependencies.
     By insisting that blog posts also be modular, not only is the blog protected from the website's computational environment, we can control each post independently of one another, move posts around across contexts, and remove posts entirely without side-effects.
-    
+
     This also affects how we treat the blog post's dependencies.
     Suppose that your post includes an analysis on a data file that you read from disk.
     This file should belong to your blog post---and be versioned by that blog post's Git repository---not your website.
@@ -141,9 +141,9 @@ Here is how I justify this view for each component:
     (At least, this was my experience.)
     This is probably for ease-of-use among users who would not appreciate having to manage the theme as a submodule.
     But we are enthusiastic seekers of modularity, so we want to keep that upstream remote connection alive.
-    As such, I installed my site's Hugo theme using Git submodule operations instead of installing it with `blogdown::install_theme()`. 
+    As such, I installed my site's Hugo theme using Git submodule operations instead of installing it with `blogdown::install_theme()`.
 
-[^theme]: The system isn't perfect. 
+[^theme]: The system isn't perfect.
 Some themes define special fields whose values are specified in your content files, but the main idea is there.
 
 - **The website `.Rprofile` file**: You may have a global .Rprofile file, but it is an increasingly common Blogdown workflow staple to set up a website-specific .Rprofile to control [Blogdown's build behavior](https://bookdown.org/yihui/blogdown/global-options.html).
@@ -167,16 +167,16 @@ Git submodules allow you to clone this dependency repo into your website directo
 If you have never worked with submodules before, here is how they work in broad strokes.
 (This is not an exhaustive intro.)
 
-**When you add a submodule to a parent repository, the parent repository tracks the _presence_ of the submodule, but it does not track the content.** 
-Your website repo tracks the presence of submodules to ensure that your project can be reproduced (read: cloned) with all necessary dependencies in place.[^netlify-clone] 
+**When you add a submodule to a parent repository, the parent repository tracks the _presence_ of the submodule, but it does not track the content.**
+Your website repo tracks the presence of submodules to ensure that your project can be reproduced (read: cloned) with all necessary dependencies in place.[^netlify-clone]
 However, your website repo is ignorant of the actual content of the submodule because the submodule code is versioned by its own separate repo.
 There is no need to duplicate that effort.
 
-[^netlify-clone]: This is how Netlify builds your site, in fact. 
+[^netlify-clone]: This is how Netlify builds your site, in fact.
 Netlify clones your website's Git repository and builds it on their servers, so this is actually super important.
 
 **Upstream changes to the submodule repo can be pulled into your website repo.**
-This is standard workflow for Git. 
+This is standard workflow for Git.
 If you want to pin your dependency to a particular commit of the submodule, you can `git checkout` that commit.
 If you want your dependency to stay dynamically up to date with the submodule's remote repo, checkout the desired branch and pull changes as they arise on the upstream remote.
 
@@ -194,7 +194,7 @@ In the spirit of modularity, there is actually nothing Blogdown-specific about i
 All the same, I will discuss a Blogdown-specific example: the `.Rprofile` module, which I keep in [its own repository here](https://github.com/mikedecr/dots_blogdown).
 I discuss how I manage _blog posts_ with submodules [later on](#blog), because that conversation is a little more involved.
 
-You can add a submodule to your (already initialized) website repo with `git submodule add [my-url] [my-destination-folder]`. 
+You can add a submodule to your (already initialized) website repo with `git submodule add [my-url] [my-destination-folder]`.
 You will want to be strategic about where you add the repo, since it will effectively behave like a cloned repository.
 I often create a `/submodules/` folder under my project root and clone submodules to that location.
 
@@ -259,7 +259,7 @@ That's because nothing _is_ wrong.
 
 **Commit changes to submdodule files to the submodule repository.**
 From the command line, this means you probably should `cd` into the submodule repo before adding any files to the index.
-If you do Git stuff inside of a GUI, you should be able to make the submodule appear as its own repo that you can do add/commit/push actions to. 
+If you do Git stuff inside of a GUI, you should be able to make the submodule appear as its own repo that you can do add/commit/push actions to.
 (I don't use Rstudio, so unfortunately I don't know if Rstudio makes this easy.)
 After committing to your local copy of the submodule repo, you should notice that your parent repository detects an updated commit in the submodule!
 You should commit that change to the parent repository as well.
@@ -284,7 +284,7 @@ Would that be fine?
 
 In short, the single-blog-module setup may be possible, but it will likely require even more advanced Git magic than just submodules.
 If you really want to know the nasty technical details, you can read about the [problem](#problem) and one [potential solution](#fix), with the caveat that I haven't tested that workflow out.
-If you trust me that the single-repo workflow is pretty complicated except for people looking to increase their Git dexterity stats, you can skip ahead to read about [separate repositories for each post](#every-post). 
+If you trust me that the single-repo workflow is pretty complicated except for people looking to increase their Git dexterity stats, you can skip ahead to read about [separate repositories for each post](#every-post).
 
 
 ### One submodule for all posts: the problem {#problem}
@@ -294,7 +294,7 @@ If we wanted to use a "single submodule" approach to blogging, we would
 
 - Move our blog posts to another repository and push it to the web.
 - Add this repository as a submodule located in your `content/blog` or analogous subdirectory.
-- The changes in the `content/blog` folder are now owned by the submodule repository. 
+- The changes in the `content/blog` folder are now owned by the submodule repository.
   The parent repo will no longer see what's happening in those files---only if you have made new commits.
 
 Unfortunately, this may be a critical problem for your website!
@@ -354,13 +354,13 @@ Here's a quick rundown of what I do:
 
 Once you are done getting your site looking the way you want, and all of your files are committed to the parent and child repositories, you can push your website repo to the remote that Netlify is tracking.
 
-Except, whoops, your site may fail to build on Netlify. 
-Why? 
+Except, whoops, your site may fail to build on Netlify.
+Why?
 Netlify works by cloning your website repository to their servers and building it with Hugo on their end.
 This process fails if Netlify can't successfully reproduce your website repo with all of the submodules declared in your `.gitmodules` file.
 Such failure can happen for two benign and fixable reasons: (1) the submodule is a private repository, or (2) the submodule was added using the repo's `ssh` URL instead of the `https` URL.
 
-In either case, all you have to do is add ssh-keys to grant Netlify access to these repositories. 
+In either case, all you have to do is add ssh-keys to grant Netlify access to these repositories.
 It sounds complicated and jargony, but Netlify describes the whole process [right here](https://docs.netlify.com/configure-builds/repo-permissions-linking/#git-submodules).
 
 Once Netlify has access to the repositories, it can build its own copy of your website.
@@ -374,53 +374,3 @@ If you find it helpful, awesome!
 But as always, you should do what works for you.
 It happened to be the case that I had a particular set of problems and a desire to strengthen some skills could help me solve them.
 
-
-```r
-sessioninfo::session_info()
-```
-
-```
-## ─ Session info ───────────────────────────────────────────────────────────────
-##  setting  value                       
-##  version  R version 4.1.2 (2021-11-01)
-##  os       macOS Big Sur 10.16         
-##  system   x86_64, darwin17.0          
-##  ui       X11                         
-##  language (EN)                        
-##  collate  en_US.UTF-8                 
-##  ctype    en_US.UTF-8                 
-##  tz       America/Chicago             
-##  date     2021-11-15                  
-## 
-## ─ Packages ───────────────────────────────────────────────────────────────────
-##  ! package     * version date       lib source        
-##  P blogdown      1.5     2021-09-02 [?] CRAN (R 4.1.0)
-##  P bookdown      0.22    2021-04-22 [?] CRAN (R 4.1.0)
-##  P bslib         0.2.5.1 2021-05-18 [?] CRAN (R 4.1.0)
-##  P cli           3.1.0   2021-10-27 [?] CRAN (R 4.1.0)
-##  P digest        0.6.28  2021-09-23 [?] CRAN (R 4.1.0)
-##  P evaluate      0.14    2019-05-28 [?] CRAN (R 4.1.0)
-##  P here          1.0.1   2020-12-13 [?] CRAN (R 4.1.0)
-##  P htmltools     0.5.1.1 2021-01-22 [?] CRAN (R 4.1.0)
-##  P jquerylib     0.1.4   2021-04-26 [?] CRAN (R 4.1.0)
-##  P jsonlite      1.7.2   2020-12-09 [?] CRAN (R 4.1.0)
-##  P knitr         1.33    2021-04-24 [?] CRAN (R 4.1.0)
-##  P magrittr      2.0.1   2020-11-17 [?] CRAN (R 4.1.0)
-##  P R6            2.5.1   2021-08-19 [?] CRAN (R 4.1.0)
-##    renv          0.14.0  2021-07-21 [1] CRAN (R 4.1.0)
-##  P rlang         0.4.12  2021-10-18 [?] CRAN (R 4.1.0)
-##  P rmarkdown     2.11    2021-09-14 [?] CRAN (R 4.1.0)
-##  P rprojroot     2.0.2   2020-11-15 [?] CRAN (R 4.1.0)
-##  P sass          0.4.0   2021-05-12 [?] CRAN (R 4.1.0)
-##  P sessioninfo   1.1.1   2018-11-05 [?] CRAN (R 4.1.0)
-##  P stringi       1.7.5   2021-10-04 [?] CRAN (R 4.1.0)
-##  P stringr       1.4.0   2019-02-10 [?] CRAN (R 4.1.0)
-##  P withr         2.4.2   2021-04-18 [?] CRAN (R 4.1.0)
-##  P xfun          0.23    2021-05-15 [?] CRAN (R 4.1.0)
-##  P yaml          2.2.1   2020-02-01 [?] CRAN (R 4.1.0)
-## 
-## [1] /Users/michaeldecrescenzo/projects/mikedecr-site/renv/library/R-4.1/x86_64-apple-darwin17.0
-## [2] /private/var/folders/_d/61_3m1g52t5b53sz8q01w6gc0000gn/T/Rtmp4ld9QH/renv-system-library
-## 
-##  P ── Loaded and on-disk path mismatch.
-```
